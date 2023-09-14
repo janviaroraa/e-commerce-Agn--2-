@@ -10,13 +10,20 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        
+        let navVC = UINavigationController(rootViewController: HomeScreenController())
+        navVC.navigationBar.prefersLargeTitles = true
+        navVC.viewControllers.first?.navigationItem.largeTitleDisplayMode = .always
+        window.rootViewController = navVC
+        
+        window.makeKeyAndVisible()
         return true
     }
-
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
