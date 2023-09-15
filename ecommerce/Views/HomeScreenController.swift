@@ -78,7 +78,7 @@ class HomeScreenController: UIViewController {
     
     private func addConstraints() {
         let constraintsToActivate: [NSLayoutConstraint] = [
-            appLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -85),
+            appLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -40),
             appLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             appLabel.heightAnchor.constraint(equalToConstant: 30),
             appLabel.widthAnchor.constraint(equalToConstant: 110),
@@ -93,7 +93,7 @@ class HomeScreenController: UIViewController {
             productListingTableView.topAnchor.constraint(equalTo: searchStackView.bottomAnchor, constant: 10),
             productListingTableView.leadingAnchor.constraint(equalTo: appLabel.leadingAnchor),
             productListingTableView.trailingAnchor.constraint(equalTo: searchStackView.trailingAnchor),
-            productListingTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            productListingTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ]
         
         NSLayoutConstraint.activate(constraintsToActivate)

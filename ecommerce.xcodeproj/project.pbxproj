@@ -13,6 +13,11 @@
 		12DB06832AB3382700AB5731 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12DB06822AB3382700AB5731 /* Assets.xcassets */; };
 		12DB06862AB3382700AB5731 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12DB06842AB3382700AB5731 /* LaunchScreen.storyboard */; };
 		12DB06922AB3664B00AB5731 /* ProductListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB06912AB3664B00AB5731 /* ProductListCell.swift */; };
+		12DB06942AB41B4500AB5731 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB06932AB41B4500AB5731 /* ProductDetailViewController.swift */; };
+		12DB06962AB41B5100AB5731 /* ProductDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB06952AB41B5100AB5731 /* ProductDetailCell.swift */; };
+		12DB06A22AB438F400AB5731 /* ProductListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB06A12AB438F400AB5731 /* ProductListModel.swift */; };
+		12DB06A42AB4B7C700AB5731 /* ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB06A32AB4B7C700AB5731 /* ScrollView.swift */; };
+		12DB06A62AB4C73900AB5731 /* ScrollView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB06A52AB4C73900AB5731 /* ScrollView2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,11 @@
 		12DB06852AB3382700AB5731 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		12DB06872AB3382700AB5731 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12DB06912AB3664B00AB5731 /* ProductListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCell.swift; sourceTree = "<group>"; };
+		12DB06932AB41B4500AB5731 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		12DB06952AB41B5100AB5731 /* ProductDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailCell.swift; sourceTree = "<group>"; };
+		12DB06A12AB438F400AB5731 /* ProductListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListModel.swift; sourceTree = "<group>"; };
+		12DB06A32AB4B7C700AB5731 /* ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView.swift; sourceTree = "<group>"; };
+		12DB06A52AB4C73900AB5731 /* ScrollView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollView2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +78,7 @@
 		12DB068D2AB3399E00AB5731 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				12DB06A12AB438F400AB5731 /* ProductListModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -77,6 +88,10 @@
 			children = (
 				12DB067D2AB3382500AB5731 /* HomeScreenController.swift */,
 				12DB06912AB3664B00AB5731 /* ProductListCell.swift */,
+				12DB06932AB41B4500AB5731 /* ProductDetailViewController.swift */,
+				12DB06952AB41B5100AB5731 /* ProductDetailCell.swift */,
+				12DB06A32AB4B7C700AB5731 /* ScrollView.swift */,
+				12DB06A52AB4C73900AB5731 /* ScrollView2.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -170,8 +185,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				12DB067E2AB3382500AB5731 /* HomeScreenController.swift in Sources */,
+				12DB06A22AB438F400AB5731 /* ProductListModel.swift in Sources */,
 				12DB067A2AB3382500AB5731 /* AppDelegate.swift in Sources */,
+				12DB06942AB41B4500AB5731 /* ProductDetailViewController.swift in Sources */,
 				12DB06922AB3664B00AB5731 /* ProductListCell.swift in Sources */,
+				12DB06A42AB4B7C700AB5731 /* ScrollView.swift in Sources */,
+				12DB06A62AB4C73900AB5731 /* ScrollView2.swift in Sources */,
+				12DB06962AB41B5100AB5731 /* ProductDetailCell.swift in Sources */,
 				12DB067C2AB3382500AB5731 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
