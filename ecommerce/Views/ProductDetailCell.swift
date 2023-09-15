@@ -10,6 +10,8 @@ import UIKit
 
 class ProductDetailCell: UITableViewCell {
     
+    private var isAddedToWishlist: Bool = false
+    
     static let identifier = "productDetailCellIdentifier"
     
     private lazy var productDetailStack: UIStackView = {
@@ -28,26 +30,33 @@ class ProductDetailCell: UITableViewCell {
     
     private lazy var productImage: UIImageView = {
         let img = UIImageView(image: UIImage(named: "Image1"))
+        img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
     
     private lazy var addToWishlistButton: UIButton = {
         let btn = UIButton()
-        
-        if let heartImage = UIImage(systemName: "heart.fill")?.withTintColor(.systemRed, renderingMode: .alwaysOriginal) {
-            let imageSize = CGSize(width: 50, height: 35)
-            let resizedImage = heartImage.resizeImage(to: imageSize)
-            btn.setImage(resizedImage, for: .normal)
-        }
-        
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(addToWishlistButtonClicked), for: .touchUpInside)
+        updateWishlistButtonImage(isAddedToWishlist: isAddedToWishlist, button: btn)
         return btn
     }()
-    
+
     @objc private func addToWishlistButtonClicked() {
-        print("add To Wishlist Button Clicked")
+        isAddedToWishlist.toggle()
+        updateWishlistButtonImage(isAddedToWishlist: isAddedToWishlist, button: addToWishlistButton)
+    }
+
+    private func updateWishlistButtonImage(isAddedToWishlist: Bool, button: UIButton) {
+        let imageName = isAddedToWishlist ? "heart.fill" : "heart"
+        let imageColor = isAddedToWishlist ? UIColor.systemRed : UIColor.lightGray
+        
+        if let heartImage = UIImage(systemName: imageName)?.withTintColor(imageColor, renderingMode: .alwaysOriginal) {
+            let imageSize = CGSize(width: 50, height: 35)
+            let resizedImage = heartImage.resizeImage(to: imageSize)
+            button.setImage(resizedImage, for: .normal)
+        }
     }
     
     private lazy var productCompanyName: UILabel = {
@@ -216,7 +225,7 @@ extension ProductDetailCell: UICollectionViewDelegate, UICollectionViewDataSourc
         colorsView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         colorsView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         colorsView.layer.cornerRadius = 25
-        colorsView.backgroundColor = UIColor.lightGray
+        colorsView.backgroundColor = UIColor.init(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: CGFloat.random(in: 0...1))
         
         cell.contentView.addSubview(colorsView)
         

@@ -123,10 +123,10 @@ class ProductListCell: UITableViewCell {
     
     private func addConstraints() {
         let constraintsToActivate: [NSLayoutConstraint] = [
-            productStack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-            productStack.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
-            productStack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            productStack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
+            productStack.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+            productStack.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+            productStack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
+            productStack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             
             productImage.widthAnchor.constraint(equalToConstant: 160),
             productTitle.heightAnchor.constraint(equalToConstant: 100),

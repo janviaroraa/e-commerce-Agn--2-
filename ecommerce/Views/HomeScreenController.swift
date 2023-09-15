@@ -25,17 +25,22 @@ class HomeScreenController: UIViewController {
     
     private lazy var searchTextField: UITextField = {
         let txt = UITextField()
-        txt.placeholder = "  Search for a lipstick..."
+        txt.placeholder = "Search for a lipstick..."
         txt.font = UIFont.systemFont(ofSize: 14)
         txt.borderStyle = .roundedRect
         txt.layer.borderWidth = 1
         txt.layer.borderColor = UIColor.black.cgColor
-        txt.layer.cornerRadius = 18
+        txt.layer.cornerRadius = 20
         txt.delegate = self
         txt.translatesAutoresizingMaskIntoConstraints = false
+
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: txt.frame.height))
+        txt.leftView = paddingView
+        txt.leftViewMode = .always
+
         return txt
     }()
-    
+
     private lazy var searchButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("Search", for: .normal)
@@ -56,6 +61,7 @@ class HomeScreenController: UIViewController {
         tbl.showsVerticalScrollIndicator = false
         tbl.dataSource = self
         tbl.delegate = self
+        tbl.separatorStyle = .none
         tbl.register(ProductListCell.self, forCellReuseIdentifier: ProductListCell.identifier)
         tbl.translatesAutoresizingMaskIntoConstraints = false
         return tbl
@@ -115,6 +121,7 @@ extension HomeScreenController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ProductListCell.identifier, for: indexPath)
+        cell.selectionStyle = .none
         return cell
     }
     
@@ -122,15 +129,8 @@ extension HomeScreenController: UITableViewDataSource, UITableViewDelegate {
         200
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        0
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = ProductDetailViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = .clear
-        return headerView
-    }
-
-
 }

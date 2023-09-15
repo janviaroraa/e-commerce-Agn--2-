@@ -39,7 +39,7 @@ class ProductDetailViewController: UIViewController {
     }
 
     @objc private func backButtonTapped() {
-        print("Back button tapped")
+        navigationController?.popViewController(animated: true)
     }
     
     private func addViews() {
