@@ -25,9 +25,21 @@ class ProductDetailViewController: UIViewController {
         btn.setTitleColor(.white, for: .normal)
         btn.backgroundColor = .black
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        btn.addTarget(self, action: #selector(itemAddedToCart), for: .touchUpInside)
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
+    
+    @objc private func itemAddedToCart() {
+        DispatchQueue.main.async {
+            let action1 = UIAlertAction(title: "Edit", style: .default)
+            let action2 = UIAlertAction(title: "View", style: .default)
+            let alert = UIAlertController(title: "Go Ahead!", message: "Your item is added to cart!", preferredStyle: .alert)
+            alert.addAction(action1)
+            alert.addAction(action2)
+            self.present(alert, animated: true)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
