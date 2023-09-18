@@ -8,21 +8,22 @@
 import Foundation
 
 struct ProductListModel: Codable {
-    let id: Int
-    let brand, name, price: String
+    let id: Int?
+    let brand: Brand?
+    let name, price: String?
     let priceSign, currency: String?
-    let imageLink: String
-    let productLink: String
-    let websiteLink: String
-    let description: String
-    let rating: Int
+    let imageLink: String?
+    let productLink: String?
+    let websiteLink: String?
+    let description: String?
+    let rating: Int?
     let category: String?
-    let productType: String
-    let tagList: [String]
-    let createdAt, updatedAt: String
-    let productAPIURL: String
-    let apiFeaturedImage: String
-    let productColors: [String]
+    let productType: String?
+    let tagList: [String]?
+    let createdAt, updatedAt: String?
+    let productAPIURL: String?
+    let apiFeaturedImage: String?
+    let productColors: [ProductColor]?
 
     enum CodingKeys: String, CodingKey {
         case id, brand, name, price
@@ -40,4 +41,18 @@ struct ProductListModel: Codable {
         case apiFeaturedImage = "api_featured_image"
         case productColors = "product_colors"
     }
+}
+
+struct ProductColor: Codable {
+    let hexValue: String
+    let colourName: String?
+
+    enum CodingKeys: String, CodingKey {
+        case hexValue = "hex_value"
+        case colourName = "colour_name"
+    }
+}
+
+enum Brand: String, Codable {
+    case maybelline = "maybelline"
 }

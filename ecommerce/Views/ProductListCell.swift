@@ -18,7 +18,7 @@ class ProductListCell: UITableViewCell {
         stk.layer.borderWidth = 1
         stk.layer.cornerRadius = 20
         stk.spacing = 10
-        stk.layoutMargins = UIEdgeInsets(top: 5, left: 10, bottom: 20, right: 20)
+        stk.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 20, right: 20)
         stk.isLayoutMarginsRelativeArrangement = true
         stk.translatesAutoresizingMaskIntoConstraints = false
         return stk
@@ -26,6 +26,7 @@ class ProductListCell: UITableViewCell {
     
     private lazy var productImage: UIImageView = {
         let img = UIImageView(image: UIImage(named: "Image1"))
+        img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()

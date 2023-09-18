@@ -9,6 +9,8 @@ import UIKit
 
 class HomeScreenController: UIViewController {
     
+    var viewModel: HomeScreenViewModel?
+    
     private lazy var appLabel: UIImageView = {
         let img = UIImageView(image: UIImage(named: "CompanyIcon"))
         img.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +27,7 @@ class HomeScreenController: UIViewController {
     
     private lazy var searchTextField: UITextField = {
         let txt = UITextField()
-        txt.placeholder = "Search for a lipstick..."
+        txt.placeholder = "Type to search"
         txt.font = UIFont.systemFont(ofSize: 14)
         txt.borderStyle = .roundedRect
         txt.layer.borderWidth = 1
@@ -53,7 +55,9 @@ class HomeScreenController: UIViewController {
     }()
     
     @objc private func searchButtonClicked() {
-        print("Search button tapped!")
+        DispatchQueue.main.async {
+            self.viewModel?.updateTableViewCells()
+        }
     }
     
     private lazy var productListingTableView: UITableView = {
@@ -72,6 +76,11 @@ class HomeScreenController: UIViewController {
         view.backgroundColor = .systemBackground
         addViews()
         addConstraints()
+        initializeViewModel()
+    }
+    
+    private func initializeViewModel() {
+        viewModel = HomeScreenViewModel(prodImage: "abc", prodTitle: "abc", prodDescription: "abc", prodCompany: "abc", prodPrice: "abc", prodColors: ["abc", "abc"])
     }
     
     private func addViews() {
