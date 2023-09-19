@@ -11,8 +11,10 @@ class HomeScreenController: UIViewController {
     
     var viewModel = HomeScreenViewModel()
     
-    private lazy var appLabel: UIImageView = {
+a    private lazy var appLabel: UIImageView = {
         let img = UIImageView(image: UIImage(named: "CompanyIcon"))
+        img.image = img.image?.withRenderingMode(.alwaysTemplate)
+        img.tintColor = .black
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -55,8 +57,8 @@ class HomeScreenController: UIViewController {
     }()
     
     @objc private func searchButtonClicked() {
-        DispatchQueue.main.async {
-            
+        if searchTextField.text == "" {
+            searchTextField.becomeFirstResponder()
         }
     }
     
@@ -95,10 +97,10 @@ class HomeScreenController: UIViewController {
     
     private func addConstraints() {
         let constraintsToActivate: [NSLayoutConstraint] = [
-            appLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -40),
+            appLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -30),
             appLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             appLabel.heightAnchor.constraint(equalToConstant: 30),
-            appLabel.widthAnchor.constraint(equalToConstant: 110),
+            appLabel.widthAnchor.constraint(equalToConstant: 170),
             
             searchStackView.topAnchor.constraint(equalTo: appLabel.bottomAnchor, constant: 20),
             searchStackView.leadingAnchor.constraint(equalTo: appLabel.leadingAnchor),
