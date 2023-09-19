@@ -15,6 +15,7 @@ class ProductDetailCell: UITableViewCell {
     private var numberOfColorsInCV: Int = 0
     private var colorsHexValue: [String] = []
     private var numberOfStarRating: Int = 0
+    private var productId: Int = 0
     
     static let identifier = "productDetailCellIdentifier"
     
@@ -50,6 +51,14 @@ class ProductDetailCell: UITableViewCell {
     @objc private func addToWishlistButtonClicked() {
         isAddedToWishlist.toggle()
         updateWishlistButtonImage(isAddedToWishlist: isAddedToWishlist, button: addToWishlistButton)
+        
+        if productId != 0 {
+            if isAddedToWishlist {
+                UserDefaultsManager.shared.addToWishlist(productId: productId)
+            } else {
+                UserDefaultsManager.shared.removeFromWishlist(productId: productId)
+            }
+        }
     }
 
     private func updateWishlistButtonImage(isAddedToWishlist: Bool, button: UIButton) {
@@ -255,6 +264,7 @@ class ProductDetailCell: UITableViewCell {
         productTitleURL = model.productLink ?? "PDC default"
         numberOfColorsInCV = model.productColors?.count ?? 0
         numberOfStarRating = Int(model.rating ?? 0)
+        productId = model.id ?? 0
         
         colorsHexValue.removeAll()
         if let colors = model.productColors {
@@ -269,6 +279,10 @@ class ProductDetailCell: UITableViewCell {
             let starRatingText = String(repeating: "⭐", count: numberOfStarRating)
             numberOfStars.text = starRatingText
         }
+        
+        isAddedToWishlist = UserDefaultsManager.shared.isInWishlist(productId: model.id ?? 0)
+        updateWishlistButtonImage(isAddedToWishlist: isAddedToWishlist, button: addToWishlistButton)
+        
         colorsCollectionView.reloadData()
     }
     

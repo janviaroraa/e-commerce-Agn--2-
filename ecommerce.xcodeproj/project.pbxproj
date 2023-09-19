@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1212FE242ABA1F5500506D91 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1212FE232ABA1F5500506D91 /* UserDefaultsManager.swift */; };
 		12DB067A2AB3382500AB5731 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB06792AB3382500AB5731 /* AppDelegate.swift */; };
 		12DB067C2AB3382500AB5731 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB067B2AB3382500AB5731 /* SceneDelegate.swift */; };
 		12DB067E2AB3382500AB5731 /* HomeScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DB067D2AB3382500AB5731 /* HomeScreenController.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1212FE232ABA1F5500506D91 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		12DB06762AB3382500AB5731 /* ecommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ecommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12DB06792AB3382500AB5731 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12DB067B2AB3382500AB5731 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				12DB06AD2AB5919B00AB5731 /* APIError.swift */,
 				12DB06B72AB8520800AB5731 /* HTTPRequest.swift */,
 				12DB06AF2AB593A500AB5731 /* Constants.swift */,
+				1212FE232ABA1F5500506D91 /* UserDefaultsManager.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				12DB06942AB41B4500AB5731 /* ProductDetailViewController.swift in Sources */,
 				12DB06922AB3664B00AB5731 /* ProductListCell.swift in Sources */,
 				12DB06AA2AB58D3F00AB5731 /* ProductDetailViewModel.swift in Sources */,
+				1212FE242ABA1F5500506D91 /* UserDefaultsManager.swift in Sources */,
 				12DB06A42AB4B7C700AB5731 /* ScrollView.swift in Sources */,
 				12DB06A62AB4C73900AB5731 /* ScrollView2.swift in Sources */,
 				12DB06962AB41B5100AB5731 /* ProductDetailCell.swift in Sources */,
