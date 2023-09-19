@@ -14,6 +14,7 @@ class ProductDetailCell: UITableViewCell {
     private var productTitleURL: String = ""
     private var numberOfColorsInCV: Int = 0
     private var colorsHexValue: [String] = []
+    private var numberOfStarRating: Int = 0
     
     static let identifier = "productDetailCellIdentifier"
     
@@ -97,6 +98,7 @@ class ProductDetailCell: UITableViewCell {
     private lazy var productInfoStackView: UIStackView = {
         let stk = UIStackView()
         stk.axis = .horizontal
+        stk.spacing = 70
         stk.translatesAutoresizingMaskIntoConstraints = false
         return stk
     }()
@@ -134,10 +136,22 @@ class ProductDetailCell: UITableViewCell {
     
     private lazy var numberOfStars: UILabel = {
         let lbl = UILabel()
-        lbl.text = "⭐"
+        lbl.textAlignment = .right
         lbl.font = UIFont.systemFont(ofSize: 20)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
+    }()
+    
+    private lazy var starsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.showsHorizontalScrollIndicator = false
+        cv.dataSource = self
+        cv.delegate = self
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        return cv
     }()
     
     private lazy var colorsCollectionView: UICollectionView = {
@@ -188,10 +202,8 @@ class ProductDetailCell: UITableViewCell {
         productInfoStackView.addArrangedSubview(priceAndCategoryStack)
         productInfoStackView.addArrangedSubview(spacerView)
         productInfoStackView.addArrangedSubview(starsView)
-        starsView.addSubview(numberOfStars)
         priceAndCategoryStack.addArrangedSubview(productPrice)
         priceAndCategoryStack.addArrangedSubview(productCategory)
-        productDetailStack.addArrangedSubview(colorsCollectionView)
         productDetailStack.addArrangedSubview(productDescription)
     }
     
@@ -213,7 +225,6 @@ class ProductDetailCell: UITableViewCell {
             addToWishlistButton.widthAnchor.constraint(equalToConstant: 40),
             
             productInfoStackView.heightAnchor.constraint(equalToConstant: 40),
-            starsView.widthAnchor.constraint(equalToConstant: 30),
             starsView.heightAnchor.constraint(equalToConstant: 30),
             colorsCollectionView.heightAnchor.constraint(equalToConstant: 60)
         ]
@@ -243,10 +254,20 @@ class ProductDetailCell: UITableViewCell {
         productDescription.text = model.description ?? "PDC default"
         productTitleURL = model.productLink ?? "PDC default"
         numberOfColorsInCV = model.productColors?.count ?? 0
+        numberOfStarRating = Int(model.rating ?? 0)
         
         colorsHexValue.removeAll()
         if let colors = model.productColors {
             colorsHexValue = colors.map { $0.hexValue ?? "" }
+        }
+        if numberOfColorsInCV > 0 {
+            productDetailStack.addArrangedSubview(colorsCollectionView)
+            productDetailStack.addArrangedSubview(productDescription)
+        }
+        if numberOfStarRating > 0{
+            starsView.addSubview(numberOfStars)
+            let starRatingText = String(repeating: "⭐", count: numberOfStarRating)
+            numberOfStars.text = starRatingText
         }
         colorsCollectionView.reloadData()
     }

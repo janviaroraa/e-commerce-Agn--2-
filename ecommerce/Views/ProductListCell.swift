@@ -10,6 +10,8 @@ import UIKit
 class ProductListCell: UITableViewCell {
     
     static let identifier = "productListCellIdentifier"
+    private var numberOfColorsInCV: Int = 0
+    private var colorsHexValue: [String] = []
     
     private lazy var productStack: UIStackView = {
         let stk = UIStackView()
@@ -75,12 +77,16 @@ class ProductListCell: UITableViewCell {
         return stk
     }()
     
-    private lazy var colorCircleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .brown
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    private lazy var colorsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.showsHorizontalScrollIndicator = false
+        cv.dataSource = self
+        cv.delegate = self
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        return cv
     }()
     
     private lazy var numberOfColorsEllipse: UIButton = {
@@ -115,8 +121,8 @@ class ProductListCell: UITableViewCell {
         descriptionStack.addArrangedSubview(productDescription)
         descriptionStack.addArrangedSubview(productPrice)
         descriptionStack.addArrangedSubview(colorStack)
-        colorStack.addArrangedSubview(colorCircleView)
-        colorStack.addArrangedSubview(numberOfColorsEllipse)
+        colorStack.addArrangedSubview(colorsCollectionView)
+//        colorStack.addArrangedSubview(numberOfColorsEllipse)
     }
     
     private func addConstraints() {
@@ -130,10 +136,9 @@ class ProductListCell: UITableViewCell {
             productTitle.heightAnchor.constraint(equalToConstant: 100),
             productDescription.heightAnchor.constraint(equalToConstant: 15),
             
-            colorCircleView.widthAnchor.constraint(equalToConstant: 22),
-            colorCircleView.heightAnchor.constraint(equalToConstant: 20),
+            colorsCollectionView.widthAnchor.constraint(equalToConstant: 20),
+            colorsCollectionView.heightAnchor.constraint(equalToConstant: 20),
             numberOfColorsEllipse.widthAnchor.constraint(equalToConstant: 40),
-            numberOfColorsEllipse.heightAnchor.constraint(equalToConstant: 50)
             
         ]
         NSLayoutConstraint.activate(constraintsToActivate)
@@ -170,5 +175,55 @@ class ProductListCell: UITableViewCell {
         } else {
             self.productImage.image = UIImage(named: "DefaultImageName")
         }
+        
+        if let colors = model.productColors {
+            colorsHexValue = colors.map { $0.hexValue ?? "" }
+            numberOfColorsInCV = colorsHexValue.count
+        } else {
+            colorsHexValue.removeAll()
+            numberOfColorsInCV = 0
+        }
+        
+        if numberOfColorsInCV > 2 {
+            colorStack.addArrangedSubview(numberOfColorsEllipse)
+            numberOfColorsEllipse.setTitle("+\(numberOfColorsInCV - 1)", for: .normal)
+        } else {
+            colorStack.removeArrangedSubview(numberOfColorsEllipse)
+        }
+        
+        colorsCollectionView.reloadData()
+    }
+}
+
+extension ProductListCell: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        (numberOfColorsInCV < 3) ? numberOfColorsInCV : 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        
+        let colorsView = UIView()
+        colorsView.translatesAutoresizingMaskIntoConstraints = false
+        colorsView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        colorsView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        colorsView.layer.cornerRadius = 10
+        
+        if indexPath.row < colorsHexValue.count {
+            let hexColor = colorsHexValue[indexPath.row]
+            colorsView.backgroundColor = UIColor(hexString: hexColor)
+        } else {
+            colorsView.backgroundColor = .gray
+        }
+            
+        
+        cell.contentView.addSubview(colorsView)
+        
+        NSLayoutConstraint.activate([
+            colorsView.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+            colorsView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+        ])
+        
+        return cell
     }
 }
