@@ -155,7 +155,7 @@ class ProductListCell: UITableViewCell {
     func loadCellData(model: ProductListModel) {
         productTitle.text = model.name ?? "PLC default"
         productDescription.text = model.description ?? "PLC default"
-        productPrice.text = model.price ?? "PLC default"
+        productPrice.text = "USD \(model.price ?? "PDC default")"
         
         if let imageUrlString = model.imageLink, let imageUrl = URL(string: imageUrlString) {
             URLSession.shared.dataTask(with: imageUrl) { (data, _, error) in

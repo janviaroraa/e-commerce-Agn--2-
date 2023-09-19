@@ -12,6 +12,8 @@ class ProductDetailCell: UITableViewCell {
     
     private var isAddedToWishlist: Bool = false
     private var productTitleURL: String = ""
+    private var numberOfColorsInCV: Int = 0
+    private var colorsHexValue: [String] = []
     
     static let identifier = "productDetailCellIdentifier"
     
@@ -62,7 +64,6 @@ class ProductDetailCell: UITableViewCell {
     
     private lazy var productCompanyName: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Maybelline"
         lbl.textAlignment = .left
         lbl.textColor = .black
         lbl.font = UIFont.systemFont(ofSize: 14)
@@ -72,7 +73,6 @@ class ProductDetailCell: UITableViewCell {
     
     private lazy var productTitle: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Maybelline Face Studio Master Hi-Light Light Booster Bronzer"
         lbl.textAlignment = .left
         lbl.textColor = .black
         lbl.numberOfLines = 0
@@ -110,7 +110,6 @@ class ProductDetailCell: UITableViewCell {
     
     private lazy var productPrice: UILabel = {
         let lbl = UILabel()
-        lbl.text = "USD 14.99"
         lbl.textAlignment = .left
         lbl.textColor = .red
         lbl.font = UIFont.boldSystemFont(ofSize: 20)
@@ -120,7 +119,6 @@ class ProductDetailCell: UITableViewCell {
     
     private lazy var productCategory: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Blush"
         lbl.textAlignment = .left
         lbl.textColor = .lightGray
         lbl.font = UIFont.systemFont(ofSize: 16)
@@ -156,7 +154,6 @@ class ProductDetailCell: UITableViewCell {
     
     private lazy var productDescription: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Maybelline Face Studio Master Hi-Light Light Boosting bronzer formula has an expert balance of shade + shimmer illuminator for natural glow. Skin goes soft-lit with zero glitz. For Best Results: Brush over all shades in palette and gently sweep over cheekbones, brow bones, and temples, or anywhere light naturally touches the face."
         lbl.textAlignment = .center
         lbl.textColor = .black
         lbl.numberOfLines = 0
@@ -241,17 +238,24 @@ class ProductDetailCell: UITableViewCell {
         
         productCompanyName.text = model.brand
         productTitle.text = model.name ?? "PDC default"
-        productPrice.text = model.price ?? "PDC default"
+        productPrice.text = "USD \(model.price ?? "PDC default")"
         productCategory.text = model.productType ?? "PDC default"
         productDescription.text = model.description ?? "PDC default"
         productTitleURL = model.productLink ?? "PDC default"
+        numberOfColorsInCV = model.productColors?.count ?? 0
+        
+        colorsHexValue.removeAll()
+        if let colors = model.productColors {
+            colorsHexValue = colors.map { $0.hexValue ?? "" }
+        }
+        colorsCollectionView.reloadData()
     }
     
 }
 
 extension ProductDetailCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        numberOfColorsInCV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -262,7 +266,14 @@ extension ProductDetailCell: UICollectionViewDelegate, UICollectionViewDataSourc
         colorsView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         colorsView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         colorsView.layer.cornerRadius = 25
-        colorsView.backgroundColor = UIColor.init(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: CGFloat.random(in: 0...1))
+        
+        if indexPath.row < colorsHexValue.count {
+            let hexColor = colorsHexValue[indexPath.row]
+            colorsView.backgroundColor = UIColor(hexString: hexColor)
+        } else {
+            colorsView.backgroundColor = .gray
+        }
+            
         
         cell.contentView.addSubview(colorsView)
         
@@ -281,5 +292,22 @@ extension UIImage {
         defer { UIGraphicsEndImageContext() }
         draw(in: CGRect(origin: .zero, size: newSize))
         return UIGraphicsGetImageFromCurrentImageContext() ?? self
+    }
+}
+
+extension UIColor {
+    convenience init?(hexString: String) {
+        var hexSanitized = hexString.trimmingCharacters(in: .whitespacesAndNewlines)
+        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+
+        var rgb: UInt64 = 0
+
+        Scanner(string: hexSanitized).scanHexInt64(&rgb)
+
+        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgb & 0x0000FF) / 255.0
+
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
 }
