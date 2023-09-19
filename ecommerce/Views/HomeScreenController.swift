@@ -11,7 +11,9 @@ class HomeScreenController: UIViewController {
     
     var viewModel = HomeScreenViewModel()
     
-a    private lazy var appLabel: UIImageView = {
+    private var filteredProducts: [ProductListModel] = []
+    
+    private lazy var appLabel: UIImageView = {
         let img = UIImageView(image: UIImage(named: "CompanyIcon"))
         img.image = img.image?.withRenderingMode(.alwaysTemplate)
         img.tintColor = .black
@@ -57,9 +59,7 @@ a    private lazy var appLabel: UIImageView = {
     }()
     
     @objc private func searchButtonClicked() {
-        if searchTextField.text == "" {
-            searchTextField.becomeFirstResponder()
-        }
+        filterProducts()
     }
     
     private lazy var productListingTableView: UITableView = {
@@ -120,7 +120,21 @@ a    private lazy var appLabel: UIImageView = {
 }
 
 extension HomeScreenController: UITextFieldDelegate {
-    
+    private func filterProducts() {
+        guard let searchText = searchTextField.text else {
+            return
+        }
+        if searchText.isEmpty {
+            searchTextField.becomeFirstResponder()
+            filteredProducts = []
+            filteredProducts = viewModel.productListModel
+        } else {
+            filteredProducts = viewModel.productListModel.filter { product in
+                return product.name?.lowercased().contains(searchText.lowercased()) ?? false
+            }
+        }
+        productListingTableView.reloadData()
+    }
 }
 
 extension HomeScreenController: UITableViewDataSource, UITableViewDelegate {
@@ -129,13 +143,21 @@ extension HomeScreenController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.productListModel.count
+        return filteredProducts.isEmpty ? viewModel.productListModel.count : filteredProducts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ProductListCell.identifier, for: indexPath) as! ProductListCell
         cell.selectionStyle = .none
-        cell.loadCellData(model: viewModel.productListModel[indexPath.row])
+        
+        let product: ProductListModel
+        if filteredProducts.isEmpty {
+            product = viewModel.productListModel[indexPath.row]
+        } else {
+            product = filteredProducts[indexPath.row]
+        }
+        
+        cell.loadCellData(model: product)
         return cell
     }
     
@@ -144,7 +166,13 @@ extension HomeScreenController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let product = viewModel.productListModel[indexPath.row]
+        let product: ProductListModel
+        if filteredProducts.isEmpty {
+            product = viewModel.productListModel[indexPath.row]
+        } else {
+            product = filteredProducts[indexPath.row]
+        }
+        
         let vc = ProductDetailViewController(product: product)
         navigationController?.pushViewController(vc, animated: true)
     }
