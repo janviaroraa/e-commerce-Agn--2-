@@ -25,7 +25,7 @@ class ProductListCell: UITableViewCell {
     }()
     
     private lazy var productImage: UIImageView = {
-        let img = UIImageView(image: UIImage(named: "Image1"))
+        let img = UIImageView(image: UIImage(named: ""))
         img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
@@ -41,7 +41,6 @@ class ProductListCell: UITableViewCell {
     
     private lazy var productTitle: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Maybelline Face Studio Master Hi-Light Light Booster Bronzer"
         lbl.textAlignment = .left
         lbl.textColor = .black
         lbl.numberOfLines = 3
@@ -52,7 +51,6 @@ class ProductListCell: UITableViewCell {
     
     private lazy var productDescription: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Maybelline"
         lbl.textAlignment = .center
         lbl.textColor = .lightGray
         lbl.font = UIFont.systemFont(ofSize: 16)
@@ -62,7 +60,6 @@ class ProductListCell: UITableViewCell {
     
     private lazy var productPrice: UILabel = {
         let lbl = UILabel()
-        lbl.text = "USD 14.99"
         lbl.textAlignment = .center
         lbl.textColor = .red
         lbl.font = UIFont.systemFont(ofSize: 18)
@@ -131,8 +128,7 @@ class ProductListCell: UITableViewCell {
             
             productImage.widthAnchor.constraint(equalToConstant: 160),
             productTitle.heightAnchor.constraint(equalToConstant: 100),
-            productDescription.heightAnchor.constraint(equalToConstant: 12),
-//            productPrice.heightAnchor.constraint(equalToConstant: 40),
+            productDescription.heightAnchor.constraint(equalToConstant: 15),
             
             colorCircleView.widthAnchor.constraint(equalToConstant: 22),
             colorCircleView.heightAnchor.constraint(equalToConstant: 20),
@@ -141,5 +137,38 @@ class ProductListCell: UITableViewCell {
             
         ]
         NSLayoutConstraint.activate(constraintsToActivate)
+    }
+    
+    func configureShadow() {
+        self.backgroundColor = .clear
+        self.contentView.layer.backgroundColor = UIColor.white.cgColor
+        self.contentView.layer.cornerRadius = 20
+        self.contentView.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.gray.cgColor
+        self.layer.shadowOffset = CGSize(width: 0, height: 2)
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowRadius = 4
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.main.scale
+    }
+    
+    func loadCellData(model: ProductListModel) {
+        productTitle.text = model.name ?? "PLC default"
+        productDescription.text = model.description ?? "PLC default"
+        productPrice.text = model.price ?? "PLC default"
+        
+        if let imageUrlString = model.imageLink, let imageUrl = URL(string: imageUrlString) {
+            URLSession.shared.dataTask(with: imageUrl) { (data, _, error) in
+                if let error = error {
+                    print("Error loading image: \(error.localizedDescription)")
+                } else if let data = data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self.productImage.image = image
+                    }
+                }
+            }.resume()
+        } else {
+            self.productImage.image = UIImage(named: "DefaultImageName")
+        }
     }
 }

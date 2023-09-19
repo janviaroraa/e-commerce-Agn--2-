@@ -9,7 +9,7 @@ import UIKit
 
 class HomeScreenController: UIViewController {
     
-    var viewModel: HomeScreenViewModel?
+    var viewModel = HomeScreenViewModel()
     
     private lazy var appLabel: UIImageView = {
         let img = UIImageView(image: UIImage(named: "CompanyIcon"))
@@ -56,7 +56,7 @@ class HomeScreenController: UIViewController {
     
     @objc private func searchButtonClicked() {
         DispatchQueue.main.async {
-            self.viewModel?.updateTableViewCells()
+            
         }
     }
     
@@ -76,11 +76,13 @@ class HomeScreenController: UIViewController {
         view.backgroundColor = .systemBackground
         addViews()
         addConstraints()
-        initializeViewModel()
+        loadData()
     }
     
-    private func initializeViewModel() {
-        viewModel = HomeScreenViewModel(prodImage: "abc", prodTitle: "abc", prodDescription: "abc", prodCompany: "abc", prodPrice: "abc", prodColors: ["abc", "abc"])
+    private func loadData() {
+        viewModel.updateTableViewCells {
+            self.productListingTableView.reloadData()
+        }
     }
     
     private func addViews() {
@@ -121,16 +123,17 @@ extension HomeScreenController: UITextFieldDelegate {
 
 extension HomeScreenController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        20
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.productListModel.count
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ProductListCell.identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ProductListCell.identifier, for: indexPath) as! ProductListCell
         cell.selectionStyle = .none
+        cell.loadCellData(model: viewModel.productListModel[indexPath.row])
         return cell
     }
     
