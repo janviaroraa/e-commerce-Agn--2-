@@ -22,6 +22,7 @@ struct ProductListModel: Codable {
     let productAPIURL: String?
     let apiFeaturedImage: String?
     let productColors: [ProductColor]?
+    var isAddedToWishlist: Bool = false
 
     enum CodingKeys: String, CodingKey {
         case id, brand, name, price

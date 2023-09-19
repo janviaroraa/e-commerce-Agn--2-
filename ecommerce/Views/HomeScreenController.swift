@@ -142,7 +142,8 @@ extension HomeScreenController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = ProductDetailViewController()
+        let product = viewModel.productListModel[indexPath.row]
+        let vc = ProductDetailViewController(product: product)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

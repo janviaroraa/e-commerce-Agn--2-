@@ -11,6 +11,7 @@ import UIKit
 class ProductDetailCell: UITableViewCell {
     
     private var isAddedToWishlist: Bool = false
+    private var productTitleURL: String = ""
     
     static let identifier = "productDetailCellIdentifier"
     
@@ -77,8 +78,21 @@ class ProductDetailCell: UITableViewCell {
         lbl.numberOfLines = 0
         lbl.font = UIFont.boldSystemFont(ofSize: 22)
         lbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(productTitleTapped))
+        lbl.isUserInteractionEnabled = true
+        lbl.addGestureRecognizer(tapGesture)
+        
         return lbl
     }()
+    
+    @objc private func productTitleTapped() {
+        if let url = URL(string: productTitleURL) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        }
+    }
     
     private lazy var productInfoStackView: UIStackView = {
         let stk = UIStackView()
@@ -210,11 +224,34 @@ class ProductDetailCell: UITableViewCell {
         NSLayoutConstraint.activate(constraintsToAdd)
     }
     
+    func loadCellData(model: ProductListModel) {
+        if let imageUrlString = model.imageLink, let imageUrl = URL(string: imageUrlString) {
+            URLSession.shared.dataTask(with: imageUrl) { (data, _, error) in
+                if let error = error {
+                    print("Error loading image: \(error.localizedDescription)")
+                } else if let data = data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self.productImage.image = image
+                    }
+                }
+            }.resume()
+        } else {
+            self.productImage.image = UIImage(named: "DefaultImageName")
+        }
+        
+        productCompanyName.text = model.brand
+        productTitle.text = model.name ?? "PDC default"
+        productPrice.text = model.price ?? "PDC default"
+        productCategory.text = model.productType ?? "PDC default"
+        productDescription.text = model.description ?? "PDC default"
+        productTitleURL = model.productLink ?? "PDC default"
+    }
+    
 }
 
 extension ProductDetailCell: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -9,6 +9,9 @@ import UIKit
 
 class ProductDetailViewController: UIViewController {
     
+    private let selectedProduct: ProductListModel
+    var viewModel = HomeScreenViewModel()
+    
     private lazy var detailTableview: UITableView = {
         let tbl = UITableView()
         tbl.dataSource = self
@@ -41,6 +44,15 @@ class ProductDetailViewController: UIViewController {
         }
     }
     
+    init(product: ProductListModel) {
+        self.selectedProduct = product
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -48,10 +60,17 @@ class ProductDetailViewController: UIViewController {
         navigationItem.leftBarButtonItem = backButton
         addViews()
         addConstraints()
+        loadData()
     }
 
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    private func loadData() {
+        viewModel.updateTableViewCells {
+            self.detailTableview.reloadData()
+        }
     }
     
     private func addViews() {
@@ -83,7 +102,13 @@ extension ProductDetailViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ProductDetailCell.identifier, for: indexPath)
+        guard indexPath.row < viewModel.productListModel.count else {
+            return UITableViewCell()
+        }
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: ProductDetailCell.identifier, for: indexPath) as! ProductDetailCell
+        cell.selectionStyle = .none
+        cell.loadCellData(model: selectedProduct)
         return cell
     }
     
